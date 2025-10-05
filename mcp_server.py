@@ -3,7 +3,7 @@ import os
 from mcp.server.fastmcp import FastMCP 
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from yfinance import yf
+import yfinance as yf
 
 load_dotenv()
 
@@ -20,9 +20,10 @@ mcp = FastMCP("finnhub-MCP-server")
 @mcp.tool() 
 def get_stock_history(ticker: str)  -> dict: 
     """ Gets last 7 days of historical price for a given stock ticker. API: stock = yf.Ticker(ticker) """ 
-    try: stock = yf.Ticker(ticker)
+    try: 
+        stock = yf.Ticker(ticker)
         history = stock.history(period="7d")
-        if history.empty
+        if history.empty :
             return {"error": f"no history found for this ticker {ticker}"}
         history.reset_index()
         dates = history['Dates'].dt_strftime('%Y-%m-%d').toList()
